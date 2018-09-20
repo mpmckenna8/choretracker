@@ -19,7 +19,7 @@ import rootReducer from "./reducers/reducer.js"
 
 const loggerMiddleware = createLogger()
 
-console.log('envirnment stuff, ', process.env)
+//console.log('envirnment stuff, ', process.env)
 const store = createStore(rootReducer, applyMiddleware(
   thunkMiddleware, loggerMiddleware))
 
