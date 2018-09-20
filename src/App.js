@@ -35,7 +35,6 @@ class App extends Component {
     console.log('is logged in on mount ? , ', this.isSignedIn())
     this.props.dispatch(updateAuthStatus(this.isSignedIn()));
 
-    console.log('trying to init the google sheets api. config = ', config)
 }
 initClient = () => {
   // 2. Initialize the JavaScript client library.

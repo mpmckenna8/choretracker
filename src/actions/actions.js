@@ -19,6 +19,7 @@ export function setShowCustom(showBool) {
 export function loadChores(callback) {
   
   return function(dispatch) {  
+    
     window.gapi.client.load("sheets", "v4", () => {
     
     gapi = window.gapi;
