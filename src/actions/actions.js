@@ -32,8 +32,6 @@ export function loadChores(callback) {
           console.log('supposedly got a response from the sheets api')
           const data = response.result.values;
           console.log(data)
-
-          const cars =  [];
           dispatch(recieveChoresSuccess(data))
         },
         response => {

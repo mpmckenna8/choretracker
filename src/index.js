@@ -16,8 +16,12 @@ import { createStore, applyMiddleware } from 'redux'
 
 import rootReducer from "./reducers/reducer.js"
 
+require('dotenv').config();
+
+
 const loggerMiddleware = createLogger()
 
+console.log('envirnment stuff, ', process.env)
 const store = createStore(rootReducer, applyMiddleware(
   thunkMiddleware, loggerMiddleware))
 
