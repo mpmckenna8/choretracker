@@ -16,8 +16,6 @@ import { createStore, applyMiddleware } from 'redux'
 
 import rootReducer from "./reducers/reducer.js"
 
-require('dotenv').config();
-
 
 const loggerMiddleware = createLogger()
 
