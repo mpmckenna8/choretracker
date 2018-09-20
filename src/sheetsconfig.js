@@ -1,5 +1,4 @@
 // config file for google sheets stuff.
-require('dotenv').config();
 
 export default {
   apiKey: process.env.REACT_APP_GOOGLE_KEY,
