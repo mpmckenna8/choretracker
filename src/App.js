@@ -56,11 +56,8 @@ initClient = () => {
     // 3. Initialize and make the API request.
     //  console.log('ned in ? = ', gapi.auth2.getAuthInstance().isSignedIn )
       gapi.auth2.getAuthInstance().isSignedIn.listen(updateSignin);
-      
       this.updateSigninStatus()
-
-      this.props.dispatch(loadChores(this.onLoad));
-      
+      this.props.dispatch(loadChores(this.onLoad));    
   });
   
 };
@@ -76,8 +73,7 @@ onLoad(data, err) {
   }
 }
 updateSigninStatus() {
-  console.log('need to handle signinstatus', this )
-
+  console.log('need to handle signinstatus. this = ', this )
   if(this) {
     console.log('need to handle signinstatus', this.isSignedIn() )
     this.props.dispatch(updateAuthStatus(this.isSignedIn()));
