@@ -72,10 +72,10 @@ onLoad(data, err) {
   }
 }
 updateSigninStatus(ev) {
-  console.log('need to handle signinstatus. this = ', this, 'ev = ', ev )
+  console.log('handling signinstatus. this = ', this.isSignedIn(), 'ev = ', ev )
   if(this) {
-    console.log('need to handle signinstatus', this.isSignedIn() )
-    this.props.dispatch(updateAuthStatus(ev));
+    console.log('need to handle signinstatus', ev )
+    this.props.dispatch(updateAuthStatus(this.isSignedIn()));
   }
 }
 submitChore() {
@@ -95,7 +95,8 @@ submitChore() {
   this.props.dispatch(addNewChore(choreData))
 }
 sheetAuth() {
-  console.log('trying to authorize')
+  console.log('trying to authorize');
+  
   window.gapi.auth2.getAuthInstance().signIn();
   
 }
