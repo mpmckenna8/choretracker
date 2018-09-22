@@ -25,6 +25,7 @@ class App extends Component {
   
   componentDidMount() {
   // 1. Load the JavaScript client library.
+    console.log('app actualy updated')
     this.props.dispatch(initGoogAPI());
 }
 
