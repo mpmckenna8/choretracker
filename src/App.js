@@ -5,12 +5,9 @@ import logo from './chores.jpeg';
 import './App.css';
 import { connect } from 'react-redux'
 
-import {setShowCustom, loadChores, addNewChore, updateAuthStatus } from "./actions/actions.js";
+import {setShowCustom, loadChores, addNewChore, updateAuthStatus, initGoogAPI, sheetAuth, signoutGoogle } from "./actions/actions.js";
 import DoneChores from "./components/donechores.js"
 
-
-var CLIENT_ID = '29404548241-19c5qq11u2g2j8hb94sf9dt7nrsrbgp2.apps.googleusercontent.com'//'309096450983-309k97ev5k7sm9v4o5kpdscl44544evn.apps.googleusercontent.com';
-var SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
 class App extends Component {
   checkCustom(e, that) {
@@ -23,61 +20,14 @@ class App extends Component {
     }
     else {
       that.props.dispatch(setShowCustom(false))
-
     }
-    
   }
   
   componentDidMount() {
   // 1. Load the JavaScript client library.
-    window.gapi.load("client:auth2", this.initClient);    
-    
-    console.log('is logged in on mount ? , ', this.isSignedIn())
-    this.props.dispatch(updateAuthStatus(this.isSignedIn()));
-
+    this.props.dispatch(initGoogAPI());
 }
-initClient = () => {
-  // 2. Initialize the JavaScript client library.
-  let gapi = window.gapi;
-  
-  let updateSignin = this.updateSigninStatus;
-  
-  gapi.client
-    .init({
-      apiKey: config.apiKey,
-      clientId: CLIENT_ID,
-      scope: SCOPES,
 
-      // Your API key will be automatically added to the Discovery Document URLs.
-      discoveryDocs: config.discoveryDocs
-    })
-    .then(() => {
-    // 3. Initialize and make the API request.
-    //  console.log('ned in ? = ', gapi.auth2.getAuthInstance().isSignedIn )
-      gapi.auth2.getAuthInstance().isSignedIn.listen(updateSignin.bind(this));
-      this.updateSigninStatus()
-      this.props.dispatch(loadChores(this.onLoad));    
-  });
-  
-};
-onLoad(data, err) {  
-//  console.log(this.props.chores)
-
-  console.log('loaded the api now to do stuff', )
-  if(err) {
-    console.log('error loading the data from sheets', err)
-  }
-  if(data) {
-    console.log('got some data back', data)
-  }
-}
-updateSigninStatus(ev) {
-  console.log('handling signinstatus. this = ', this.isSignedIn(), 'ev = ', ev )
-  if(this) {
-    console.log('need to handle signinstatus', ev )
-    this.props.dispatch(updateAuthStatus(this.isSignedIn()));
-  }
-}
 submitChore() {
   
   console.log('need to submit a chore.');
@@ -94,34 +44,8 @@ submitChore() {
   choreData = [chorename, chore_actual, dateread];
   this.props.dispatch(addNewChore(choreData))
 }
-sheetAuth() {
-  console.log('trying to authorize');
-  
-  window.gapi.auth2.getAuthInstance().signIn();
-  
-}
 handleSignoutClick(event) {
-  window.gapi.auth2.getAuthInstance().signOut();
-  this.props.dispatch(updateAuthStatus(false));
-
-}
-
-isSignedIn() {
-  
-  if( window.gapi.auth2) {
-    let GoogleAuth = window.gapi.auth2.getAuthInstance().currentUser.get().hasGrantedScopes(SCOPES);
-    let SignedIn =  window.gapi.auth2;
-    let isLoggedOn = false;
-    if( SignedIn) {
-      isLoggedOn = SignedIn.getAuthInstance() //.currentUser.get.hasGrantedScopes(SCOPES)
-    }
-
-      console.log('is signed in? ', GoogleAuth)
-      return GoogleAuth
-  }
-
-  return false // SignedIn
-
+  this.props.dispatch(signoutGoogle())
 }
 
   render() {
@@ -138,7 +62,7 @@ isSignedIn() {
         
         {
           this.props.chores.signedIn ? <button id="signout-button" onClick={(e) => { this.handleSignoutClick()}} >Sign Out</button> : <span><p>Authenticate with Google to add chores to the spreadsheet</p>
-            <button id="authorize-button" onClick={(e) => {    this.sheetAuth() }
+            <button id="authorize-button" onClick={(e) => {    this.props.dispatch(sheetAuth())  }
           }>Authorize</button></span>
         }
 
