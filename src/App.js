@@ -11,7 +11,6 @@ import DoneChores from "./components/donechores.js"
 
 class App extends Component {
   checkCustom(e, that) {
-    console.log(that)
     console.log('check for custom event', e)
     
     if(e === 'custom') {
@@ -25,24 +24,25 @@ class App extends Component {
   
   componentDidMount() {
   // 1. Load the JavaScript client library.
-    console.log('app actualy updated')
+  //  console.log('app actualy updated')
+    console.log('make sure privacy add ons are disable for this site to allow authentication.')
     this.props.dispatch(initGoogAPI());
 }
 
 submitChore() {
-  
   console.log('need to submit a chore.');
   let datedat = new Date()
   let dateread = datedat.toDateString();
 
   let choreData = ['matt', 'did', Date.now()]
   let chorename = document.querySelector('#namein').value;
-  let chore_actual = document.querySelector('#chore-select').value
-  let timenow = Date.now()
-  if(chorename === 'custom') {
+  let chore_actual = document.querySelector('#chore-select').value;
+  let chore_deets = document.querySelector('#chore_deets').value;
+//  let timenow = Date.now()
+  if(chore_actual === 'custom') {
     chore_actual = document.querySelector('#customtext').value
   }
-  choreData = [chorename, chore_actual, dateread];
+  choreData = [chorename, chore_actual, dateread, chore_deets];
   this.props.dispatch(addNewChore(choreData))
 }
 handleSignoutClick(event) {
@@ -87,6 +87,9 @@ handleSignoutClick(event) {
           {
             this.props.chores.showcustom ? <input type="text" id="customtext" /> : "" 
           }
+          <br/>
+          <label>Chore Details:</label>
+          <input type="text" id="chore_deets"></input>
           <br/>
           <button id="submit_button" onClick={() => this.submitChore()} >Submit</button>
           
